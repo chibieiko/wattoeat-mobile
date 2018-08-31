@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Wattoeat</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="navigation_drawer_open">Avaa navigation drawer</string>
+    <string name="navigation_drawer_close">Sulje navigation drawer</string>
+    <string name="nav_header_title">Nimi tähän</string>
+    <string name="nav_header_subtitle">Ei ehkä tarvita mitään tähän</string>
+    <string name="nav_header_desc">Navigaation otsikko</string>
+    <string name="nav_home_round">Uusi kotiruokakierros</string>
+    <string name="nav_out_round">Uusi ulkonasyömiskierros</string>
+    <string name="nav_add_option">Lisää vaihtoehto</string>
+    <string name="nav_change_user">Vaihda käyttäjää</string>
+    <string name="action_settings">Asetukset</string>
+</resources>
