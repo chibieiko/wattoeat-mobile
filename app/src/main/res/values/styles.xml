@@ -27,6 +27,12 @@
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/text_header</item>
+    </style>
+
+    <style name="WattoeatButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/wattoeat_button</item>
+        <item name="android:textColor">@color/textPrimary</item>
     </style>
 
 </resources>
