@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Wattoeat</string>
-    <string name="title_activity_base">BaseActivity</string>
     <string name="navigation_drawer_open">Avaa navigation drawer</string>
     <string name="navigation_drawer_close">Sulje navigation drawer</string>
     <string name="nav_header_title">Nimi tähän</string>
