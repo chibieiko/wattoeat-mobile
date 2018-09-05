@@ -20,6 +20,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // make changes on the Main UI thread
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { result ->  Timber.i("result is: %s", result[0].name)},
+                        { result ->  hello_text.text = result[0].name},
                         { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
                 )
     }
