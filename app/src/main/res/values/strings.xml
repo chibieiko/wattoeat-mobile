@@ -10,4 +10,8 @@
     <string name="nav_add_option">Lisää vaihtoehto</string>
     <string name="nav_change_user">Vaihda käyttäjää</string>
     <string name="action_settings">Asetukset</string>
+
+    <!-- Login -->
+    <string name="login_title">Kuka olet?</string>
+    <string name="shared_preference_user_key">com.mobile.wattoeat.wattoeat.USER_ID</string>
 </resources>

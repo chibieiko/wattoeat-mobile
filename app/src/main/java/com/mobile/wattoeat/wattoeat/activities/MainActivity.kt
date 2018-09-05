@@ -1,5 +1,7 @@
 package com.mobile.wattoeat.wattoeat.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Check if user id is known, redirect to login if not
+        handleUserCheck()
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -63,9 +69,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // make changes on the Main UI thread
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { result ->  hello_text.text = result[0].name},
+                        { result -> hello_text.text = result[0].name },
                         { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
                 )
+    }
+
+    fun handleUserCheck() {
+        val userId = getSharedPreferences(getString(R.string.shared_preference_user_key),
+                Context.MODE_PRIVATE)
+
+        if (userId != null) {
+            // Start login activity if no user id is saved
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onBackPressed() {
