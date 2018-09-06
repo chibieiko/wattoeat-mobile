@@ -10,7 +10,12 @@ interface ApiService {
             val retrofit = makeRetrofit()
             return retrofit.create(ApiService::class.java)
         }
+
+        val apiService by lazy {
+            create()
+        }
     }
+
 
     @GET("users")
     fun getUsers(): Observable<List<UserModel>>

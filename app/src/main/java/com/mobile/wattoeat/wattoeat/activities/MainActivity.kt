@@ -10,28 +10,16 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.crashlytics.android.Crashlytics
 import com.mobile.wattoeat.wattoeat.BuildConfig
 import com.mobile.wattoeat.wattoeat.R
-import com.mobile.wattoeat.wattoeat.services.ApiService
 import com.mobile.wattoeat.wattoeat.utils.CrashReportingTree
 import io.fabric.sdk.android.Fabric
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    val apiService by lazy {
-        ApiService.create()
-    }
-
-    var disposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,17 +49,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             Timber.plant(CrashReportingTree())
         }
-
-        disposable = apiService.getUsers()
-                // fetch the data on background, a separate thread from main UI thread
-                .subscribeOn(Schedulers.io())
-                // observeOn allows us to define in which thread subscribe methods are executed on
-                // make changes on the Main UI thread
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result -> hello_text.text = result[0].name },
-                        { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
-                )
     }
 
     fun handleUserCheck() {
@@ -134,10 +111,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    override fun onPause() {
-        super.onPause()
-        disposable?.dispose()
     }
 }
