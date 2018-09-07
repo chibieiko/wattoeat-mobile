@@ -37,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
                 )
     }
 
+    // todo save user id to shared preferences and open main activity when user is selected
+
     override fun onPause() {
         super.onPause()
         disposable?.dispose()
