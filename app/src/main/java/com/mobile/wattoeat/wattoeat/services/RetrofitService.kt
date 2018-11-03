@@ -6,8 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-
-
+/*
 fun makeRetrofit(vararg interceptors: Interceptor) = Retrofit.Builder()
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
@@ -26,4 +25,4 @@ fun headersInterceptor() = Interceptor { chain ->
             .addHeader("Accept", "application/json")
             .addHeader("Content-Type", "application/json")
             .build())
-}
+}*/

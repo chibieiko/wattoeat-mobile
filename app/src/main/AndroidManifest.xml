@@ -16,7 +16,7 @@
             android:value="${FABRIC_API_KEY}" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".dashboard.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".auth.FirebaseUIActivity"></activity>
     </application>
 
 </manifest>

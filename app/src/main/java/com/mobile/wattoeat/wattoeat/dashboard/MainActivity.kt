@@ -1,6 +1,5 @@
-package com.mobile.wattoeat.wattoeat.activities
+package com.mobile.wattoeat.wattoeat.dashboard
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,9 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.crashlytics.android.Crashlytics
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 import com.mobile.wattoeat.wattoeat.BuildConfig
 import com.mobile.wattoeat.wattoeat.R
+import com.mobile.wattoeat.wattoeat.auth.FirebaseUIActivity
 import com.mobile.wattoeat.wattoeat.utils.CrashReportingTree
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,8 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Check if user id is known, redirect to login if not
-        handleUserCheck()
+        checkIfUserLoggedIn()
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -36,7 +38,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this,
+                drawer_layout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        )
+
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -51,13 +59,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun handleUserCheck() {
-        val userId = getSharedPreferences(getString(R.string.shared_preference_user_key),
-                Context.MODE_PRIVATE)
+    private fun checkIfUserLoggedIn() {
+        val user = FirebaseAuth.getInstance().currentUser
 
-        if (userId != null) {
-            // Start login activity if no user id is saved
-            val intent = Intent(this, LoginActivity::class.java)
+        if (user == null) {
+            val intent = Intent(this, FirebaseUIActivity::class.java)
             startActivity(intent)
         }
     }
@@ -105,11 +111,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_send -> {
-
+                this.signOut()
             }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun signOut() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener {
+                    val intent = Intent(this, FirebaseUIActivity::class.java)
+                    startActivity(intent)
+
+                    Toast.makeText(
+                            this,
+                            R.string.success_log_out,
+                            Toast.LENGTH_SHORT
+                    ).show()
+                }
     }
 }
