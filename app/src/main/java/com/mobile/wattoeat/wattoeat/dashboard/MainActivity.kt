@@ -1,14 +1,17 @@
 package com.mobile.wattoeat.wattoeat.dashboard
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.AuthUI
@@ -16,20 +19,34 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mobile.wattoeat.wattoeat.BuildConfig
 import com.mobile.wattoeat.wattoeat.R
 import com.mobile.wattoeat.wattoeat.auth.FirebaseUIActivity
+import com.mobile.wattoeat.wattoeat.databinding.ActivityMainBinding
+import com.mobile.wattoeat.wattoeat.databinding.NavHeaderMainBinding
 import com.mobile.wattoeat.wattoeat.utils.CrashReportingTree
+import com.squareup.picasso.Picasso
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var headerBinding: NavHeaderMainBinding
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkIfUserLoggedIn()
 
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        headerBinding = NavHeaderMainBinding.bind(binding.navView
+                .getHeaderView(0))
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        headerBinding.viewModel = viewModel
+        headerBinding.executePendingBindings()
+
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
@@ -79,6 +96,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+
+        val url = viewModel.user.get()?.photoUrl
+        val imageView: ImageView? = navHeaderImageView
+        if (viewModel.user.get() != null && imageView != null) {
+            Picasso.get()
+                    .load(url)
+                    .fit()
+                    .into(imageView)
+        }
         return true
     }
 
@@ -97,6 +123,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_camera -> {
                 // Handle the camera action
+                val photo = (FirebaseAuth.getInstance().currentUser?.photoUrl)
+                Toast.makeText(this, photo.toString(), Toast.LENGTH_LONG).show()
             }
             R.id.nav_gallery -> {
 
