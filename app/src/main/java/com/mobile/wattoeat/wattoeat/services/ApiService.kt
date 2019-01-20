@@ -1,10 +1,11 @@
 package com.mobile.wattoeat.wattoeat.services
 
-import retrofit2.http.GET
-import io.reactivex.Observable
+import com.mobile.wattoeat.wattoeat.options.Option
+import io.reactivex.Single
+import retrofit2.http.POST
 
 interface ApiService {
-   /* companion object {
+    companion object {
         fun create(): ApiService {
             val retrofit = makeRetrofit()
             return retrofit.create(ApiService::class.java)
@@ -15,7 +16,6 @@ interface ApiService {
         }
     }
 
-
-    @GET("users")
-    fun getUsers(): Observable<List<UserModel>>*/
+    @POST("/options/new.json")
+    fun postOption(): Single<Option>
 }

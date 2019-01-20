@@ -1,6 +1,7 @@
 package com.mobile.wattoeat.wattoeat.dashboard
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -15,12 +16,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mobile.wattoeat.wattoeat.BuildConfig
 import com.mobile.wattoeat.wattoeat.R
 import com.mobile.wattoeat.wattoeat.auth.FirebaseUIActivity
 import com.mobile.wattoeat.wattoeat.databinding.ActivityMainBinding
 import com.mobile.wattoeat.wattoeat.databinding.NavHeaderMainBinding
+import com.mobile.wattoeat.wattoeat.options.AddOptionActivity
 import com.mobile.wattoeat.wattoeat.utils.CrashReportingTree
 import com.squareup.picasso.Picasso
 import io.fabric.sdk.android.Fabric
@@ -29,7 +32,8 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var headerBinding: NavHeaderMainBinding
@@ -37,13 +41,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         checkIfUserLoggedIn()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         headerBinding = NavHeaderMainBinding.bind(binding.navView
                 .getHeaderView(0))
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
+        viewModel.loadOptions()
+
         headerBinding.viewModel = viewModel
         headerBinding.executePendingBindings()
 
@@ -105,6 +111,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .fit()
                     .into(imageView)
         }
+
         return true
     }
 
@@ -121,24 +128,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-                val photo = (FirebaseAuth.getInstance().currentUser?.photoUrl)
-                Toast.makeText(this, photo.toString(), Toast.LENGTH_LONG).show()
+            R.id.nav_add_option -> {
+                AddOptionActivity.startActivity(this)
             }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
+            R.id.nav_logout -> {
                 this.signOut()
             }
         }

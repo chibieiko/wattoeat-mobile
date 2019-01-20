@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".auth.FirebaseUIActivity"></activity>
+        <activity android:name=".auth.FirebaseUIActivity" />
+        <activity android:name=".options.AddOptionActivity"></activity>
     </application>
 
 </manifest>
